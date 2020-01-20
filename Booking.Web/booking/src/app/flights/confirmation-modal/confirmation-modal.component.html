@@ -1,0 +1,15 @@
+<div *ngIf="isVisible"
+     class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete trip from {{from}} to {{to}}?</p>
+    </div>
+    <div class="modal-footer">
+      <button  class="confirmation-button" (click)="onConfirmation()">Yes</button>
+      <button class="cancel-button" (click)="onCancel()">No</button>
+    </div>
+  </div>
+</div>
