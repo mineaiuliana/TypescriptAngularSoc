@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Booking.Api
@@ -16,12 +19,18 @@ namespace Booking.Api
     public static class FlightsApi
     {
         [FunctionName("GetFlights")]
+        [OpenApiOperation(operationId: "Get", tags: new []{"Get flights"})]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<FlightModel>), Description = "Returns the flights")]
         public static IActionResult Get(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "flights")]
             HttpRequest req) =>
             new OkObjectResult(Repository.Flights);
 
         [FunctionName("GetFlightById")]
+        [OpenApiOperation(operationId: "GetById", tags: new[] { "Get flight by id" })]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "flight id")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(FlightModel))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType:"text/plain", bodyType: typeof(string))]
         public static IActionResult GetById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "flights/{id}")]
             HttpRequest req,
@@ -37,6 +46,10 @@ namespace Booking.Api
         }
 
         [FunctionName("CreateFlight")]
+        [OpenApiOperation("add", "Book new flight")]
+        [OpenApiRequestBody("application/json", typeof(UpsertFlightModel))]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(FlightModel))]
+        [OpenApiResponseWithBody(HttpStatusCode.BadRequest, "application/json", typeof(FlightModel))]
         public static async Task<IActionResult> Post(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "flights")]
             HttpRequest req)
@@ -55,6 +68,12 @@ namespace Booking.Api
         }
 
         [FunctionName("EditFlight")]
+        [OpenApiOperation("edit", "Edit existing flight")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "flight id")]
+        [OpenApiRequestBody("application/json", typeof(UpsertFlightModel))]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(FlightModel))]
+        [OpenApiResponseWithBody(HttpStatusCode.BadRequest, "application/json", typeof(object))]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "text/plain", bodyType: typeof(string))]
         public static async Task<IActionResult> Put(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "flights/{id}")]
             HttpRequest req,
@@ -80,6 +99,10 @@ namespace Booking.Api
         }
 
         [FunctionName("DeleteFlight")]
+        [OpenApiOperation("delete", "Delet flight")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "flight id")]
+        [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(FlightModel))]
+        [OpenApiResponseWithBody(HttpStatusCode.NotFound, "text/plain", typeof(string))]
         public static IActionResult Delete(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "flights/{id}")]
             HttpRequest req,
