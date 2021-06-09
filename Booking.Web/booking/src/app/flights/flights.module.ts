@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DetailsComponent } from './details/details.component';
-import { FlightsRoutingModule } from './flights-routing.module';
-import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
+import { FlightsRoutingModule } from './flights-rounting.module';
+import { EntryComponent } from './entry/entry.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, DetailsComponent, ConfirmationModalComponent],
-  imports: [CommonModule,
-     FlightsRoutingModule, ReactiveFormsModule],
+  declarations: [
+    DashboardComponent,
+    EntryComponent
+  ],
+  imports: [
+    CommonModule, FlightsRoutingModule, ReactiveFormsModule, SharedModule
+  ]
 })
 export class FlightsModule { }

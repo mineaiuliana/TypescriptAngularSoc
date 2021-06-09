@@ -1,0 +1,26 @@
+<form [formGroup]="flightForm" (ngSubmit)="onSubmit()">
+   <div>
+     <label>To: </label>
+     <input type="text" formControlName ="to">
+   </div>
+
+   <div>
+    <label>From: </label>
+    <input type="text" formControlName ="from">
+  </div>
+
+  <div>
+    <label>Price: </label>
+    <input type="number" formControlName ="price" step="0.01">
+  </div>
+
+  <div>
+    <label>Date: </label>
+    <input type="datetime-local" formControlName ="date"
+         [value]="flightForm.get('date')?.value | date: 'yyyy-MM-ddTHH:mm'">
+  </div>
+
+  <button type="submit"
+        [disabled]="!flightForm.valid">Submit</button>
+
+</form>

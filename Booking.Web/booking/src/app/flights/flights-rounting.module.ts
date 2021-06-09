@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { DetailsComponent } from './details/details.component';
-
+import { EntryComponent } from './entry/entry.component';
 
 const routes: Routes = [
   {
@@ -13,18 +11,20 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    component: DetailsComponent,
+    component: EntryComponent,
     pathMatch: 'full'
   },
   {
     path: ':id',
-    component: DetailsComponent,
+    component: EntryComponent,
     pathMatch: 'full'
   }
-];
+]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FlightsRoutingModule { }
+export class FlightsRoutingModule {
+
+}

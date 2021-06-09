@@ -1,27 +1,13 @@
-<div>
-  <button (click)="onAddFlight()">Add</button>
-</div>
-<div class="container">
-  <div class="table-row header">
-    <div class="column header">To</div>
-    <div class="column header">From</div>
-    <div class="column header">Price</div>
-    <div class="column header">Date</div>
-    <div class="column header">Action</div>
-  </div>
-  <ng-container *ngFor="let flight of flights">
-    <div class="table-row"
-         (click)="onRowClick(flight)">
-      <div class="column">{{flight.to}}</div>
-      <div class="column">{{flight.from}}</div>
-      <div class="column">{{flight.price}} $</div>
-      <div class="column">{{flight.date | date:'MMM d, y, h:mm a'}}</div>
-      <div class="column"><a (click)="onDeleteClick($event,flight)">Delete</a></div>
-    </div>
-  </ng-container>
-</div>
+<p>dashboard works!</p>
+<a routerLink='new'>New flight</a>
 
-<app-confirmation-modal [isVisible]="deleteModalIsVisible"
-                        [to]="flight.to"
-                        [from]="flight.from"
-                        (closeModal)="onDeleteModalClose($event)"></app-confirmation-modal>
+<ng-container *ngFor="let flight of flights">
+  <div class="row">
+    <span>{{flight.to}}</span>
+    <span>{{flight.from}}</span>
+    <span>{{flight.price | price}}</span>
+    <span>{{flight.date | date: 'MMM d, y, h:mm a'}}</span>
+    <button (click)="onGoToDetails(flight.id)">GoToDetails</button>
+    <button (click)="onDeleteClick(flight.id)">Delete</button>
+  </div>
+</ng-container>

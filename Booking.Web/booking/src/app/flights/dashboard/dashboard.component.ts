@@ -1,62 +1,33 @@
-import { Component, OnInit, OnDestroy, createPlatformFactory } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-
-import { FlightsService, Flight } from '../shared';
+import { Flight } from '../shared/flight.model';
+import { FlightsService } from '../shared/flights.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-  flights: Flight[];
-  deleteModalIsVisible: boolean;
-  flight: Flight = new Flight();
+export class DashboardComponent implements OnInit {
+   flights: Flight[];
+  constructor(private service: FlightsService, private router:Router) { }
 
-  private getFlightsSubscription: Subscription;
-  private deleteSubscription: Subscription;
-
-  constructor(private readonly service: FlightsService, private readonly router: Router) { }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.getFlights();
   }
 
-  ngOnDestroy(): void {
-    if (this.getFlightsSubscription) {
-      this.getFlightsSubscription.unsubscribe();
-    }
-    if (this.deleteSubscription) {
-      this.deleteSubscription.unsubscribe();
-    }
+  onGoToDetails(flightId: number){
+   this.router.navigate(['/flights', flightId]);
   }
 
-  onRowClick(flight: Flight) {
-    this.router.navigate(['/flights', flight.id]);
+  onDeleteClick(flightId: number){
+    this.service.delete(flightId).subscribe(()=>{
+      this.getFlights();
+    })
   }
 
-  onAddFlight() {
-    this.router.navigate(['/flights/new']);
-  }
-
-  onDeleteClick(event: Event, flight: Flight) {
-    event.stopPropagation();
-    this.flight = flight;
-    this.deleteModalIsVisible = true;
-  }
-
-  onDeleteModalClose(deleteOption: boolean) {
-    this.deleteModalIsVisible = false;
-    if (deleteOption) {
-      this.deleteSubscription = this.service.delete(this.flight.id).subscribe(() => {
-        this.getFlights();
-      });
-    }
-  }
-
-  private getFlights() {
-    this.getFlightsSubscription = this.service.getFlights().subscribe((data: Flight[]) => {
+  private getFlights(){
+    this.service.get().subscribe((data : Flight[]) => {
       this.flights = data;
     });
   }

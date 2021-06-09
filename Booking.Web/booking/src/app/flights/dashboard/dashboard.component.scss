@@ -1,30 +1,6 @@
-.container{
+.row{
   display: flex;
-  flex-direction: column;
-  width: 90%;
-  max-width: 650px;
-}
-
-.table-row{
-  display: flex;
-  flex-flow: row wrap;
-  padding-left:15px;
-  padding-right:15px;
-  padding-top: 5px;
-  border-bottom: 2px solid #e0e0e0;
-  cursor: pointer;
-
-}
-
-.table-row.header {
-  background-color: #FFEEDB;
-  font-weight: bold;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  cursor: text;
-}
-
-.column{
-     flex-grow: 1;  
-     flex-basis: 0;
+  flex-direction: row;
+  justify-content: space-between;
+  width:30%;
 }

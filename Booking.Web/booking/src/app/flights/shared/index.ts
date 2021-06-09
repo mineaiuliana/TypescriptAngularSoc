@@ -1,2 +1,2 @@
-export * from './dashboard.service';
-export * from './models/flight.model';
+export * from './flight.model';
+export * from './flights.service';
